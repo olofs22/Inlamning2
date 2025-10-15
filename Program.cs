@@ -15,35 +15,42 @@
             {
                 meny.WriteMenu(); //kör meny metoden
 
-                int val = Convert.ToInt32(Console.ReadLine()); //tar in en input som används för att navigera menyn
+                int val;
 
-                switch (val) //switch för att navigera programmet
+                bool checkInput = int.TryParse(Console.ReadLine(), out val); //kollar så att inputen är en integer
+
+                if (checkInput == false) //if sats för att kolla så att inputen är giltig, om den inte är det kommer ett felmeddelande visas
                 {
-                    case 1:
-                        transactionManager.AddTransaction();
-                        break;
-                    case 2:
-                        transactionManager.ListTransactions();
-                        break;
-                    case 3:
-                        transactionManager.CalculateBalance();
-                        break;
-                    case 4:
-                        transactionManager.DeleteTransaction();
-                        break;
-                    case 5:
-                        transactionManager.Statistics();
-                        break;
-                    case 6:
-                        running = false;
-                        break;
+                    Console.WriteLine("Ogiltigt val, försök igen!");
+                }
+                else
+                {
+                    switch (val) //switch för att navigera programmet
+                    {
+                        case 1:
+                            transactionManager.AddTransaction();
+                            break;
+                        case 2:
+                            transactionManager.ListTransactions();
+                            break;
+                        case 3:
+                            transactionManager.CalculateBalance();
+                            break;
+                        case 4:
+                            transactionManager.DeleteTransaction();
+                            break;
+                        case 5:
+                            transactionManager.Statistics();
+                            break;
+                        case 6:
+                            running = false;
+                            break;
+                        default:
+                            Console.WriteLine("Ogiltigt val, försök igen!"); //kollar så att inputen är giltig, att användaren väljer mellan 1-6
+                            break;
+                    }
                 }
             }
-
-            
-
-            
-            
         }
     }
 }

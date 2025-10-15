@@ -12,13 +12,20 @@ namespace Inlämning2
     {
         public void WriteMenu()
         {
-            Console.WriteLine("Välkommen, vänligen välj ett av alternativen nedan");
+            Console.WriteLine("\nVälkommen, vänligen välj ett av alternativen nedan");
             Console.WriteLine("1: Lägg till en transaktion");
             Console.WriteLine("2: Lista alla transkationer");
             Console.WriteLine("3: Visa balansen");
             Console.WriteLine("4: Ta bort en transaktion");
             Console.WriteLine("5: Visa statistik");
             Console.WriteLine("6: Avsluta");
+        }
+        public static void ColorChange(string text, ConsoleColor color)
+        {
+            var originalColor = Console.ForegroundColor;
+            Console.ForegroundColor = color;
+            Console.WriteLine(text);
+            Console.ForegroundColor = originalColor;
         }
         
     }
