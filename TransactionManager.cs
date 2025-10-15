@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 //Klass som sköter logiken kring transaktionerna
 namespace Inlämning2
@@ -34,23 +35,83 @@ namespace Inlämning2
                     double Ut = Convert.ToDouble(Console.ReadLine());
                     Ut = -Math.Abs(Ut); //Gör om input till ett negativt tal
                     newTransaction.Amount = Ut;//sätter inputen till attributen
+
+                    Console.WriteLine("Kategorisera utbetalningen enligt följande kategorier");
+
+                    string Kat1 = "Hushåll";
+                    string Kat2 = "Transport";
+                    string Kat3 = "Övrigt";
+
+                    Console.WriteLine($"1. {Kat1}");
+                    Console.WriteLine($"2. {Kat2}");
+                    Console.WriteLine($"3. {Kat3}");
+
+                    int KatVal = Convert.ToInt32(Console.ReadLine());
+
+                    switch (KatVal)
+                    {
+                        case 1:
+                            newTransaction.Category = Kat1;
+                            break;
+                        case 2:
+                            newTransaction.Category = Kat2;
+                            break;
+                        case 3:
+                            newTransaction.Category = Kat3;
+                            break;
+                    }
                 }
                 else
                 {
                     Console.WriteLine("Ange belopp för inbetalning");
                     double In = Convert.ToDouble(Console.ReadLine());
                     newTransaction.Amount = In;
+
+                    Console.WriteLine("Kategorisera inbetalningen enligt följande kategorier");
+
+                    string Kat1 = "Lön";
+                    string Kat2 = "Gåva";
+                    string Kat3 = "Övrigt";
+
+                    Console.WriteLine($"1. {Kat1}");
+                    Console.WriteLine($"2. {Kat2}");
+                    Console.WriteLine($"3. {Kat3}");
+
+                    int KatVal = Convert.ToInt32(Console.ReadLine());
+
+                    switch (KatVal)
+                    {
+                        case 1:
+                            newTransaction.Category = Kat1;
+                            break;
+                        case 2:
+                            newTransaction.Category = Kat2;
+                            break;
+                        case 3:
+                            newTransaction.Category = Kat3;
+                            break;
+                    }
                 }
 
-                //simpel rl för att lägga till en beskrivning
-                Console.WriteLine("Beskriv transaktionen: ");
-                string TransaktionsBeskrivning = Console.ReadLine();
+                //do while loop som gör att man måste mata in en beskrivning för att gå vidare
+                string TransaktionsBeskrivning;
+                do
+                {
+                    Console.WriteLine("Beskriv transaktionen: ");
+                    TransaktionsBeskrivning = Console.ReadLine();
+
+                    if (string.IsNullOrWhiteSpace(TransaktionsBeskrivning))
+                    {
+                        Console.WriteLine("Beskrivningen får inte vara tom, försök igen!");
+                    }
+
+                } while (string.IsNullOrWhiteSpace(TransaktionsBeskrivning));
+
                 newTransaction.Description = TransaktionsBeskrivning;
 
-                //simpel rl för att lägga till en kategori
-                Console.WriteLine("Kategorisera transaktionen");
-                newTransaction.Category = Console.ReadLine();
 
+                //simpel rl för att lägga till en kategori
+                
                 //Lägger till när transkationen gjordes, med hjälp av DateTime.Now får vi realtid :))
                 newTransaction.Date = DateTime.Now;
 
@@ -123,6 +184,28 @@ namespace Inlämning2
             else
             {
                 Console.WriteLine($"Ingen transaktion med {InputId} hittades...");
+            }
+        }
+        public void CalculateBalance()
+        {
+            double Balance = 0; //Ny double som sätts till 0
+            foreach (var transaktion in transactions ) //foreach loop för att loopa igenom varenda objekt i listan
+            {
+                Balance += (transaktion.Amount); //Plussa på varje Amount in i balance
+            }
+            if (Balance < 0) //om balance är negativ skrivs balansen ut i röd text
+            {
+                var originalColor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Balans: {Balance}kr");
+                Console.ForegroundColor = originalColor;
+            }
+            else //om balance är positiv skrivs balansen ut i grön text
+            {
+                var originalColor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"Balans: {Balance}kr");
+                Console.ForegroundColor = originalColor;
             }
         }
     }
