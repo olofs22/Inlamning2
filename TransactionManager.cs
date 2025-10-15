@@ -25,17 +25,34 @@ namespace Inlämning2
                 //Skapar en ny instans av objekten listan består av
                 Transaction newTransaction = new Transaction();
 
-                Console.WriteLine("Vill du göra en inbetalning eller utbetalning?");
-                string val = Console.ReadLine();
+                Console.WriteLine("klicka Enter för inbetalning, valfri knapp för utbetalning?");
+                ConsoleKeyInfo keyInfo = Console.ReadKey(); //readkey för att välja mellan in eller utbetalning
                 //if sats för att bestämma om man ska göra en in eller utbetalning
                 //om man väljer utbetalning kommer inputen göras om till ett negativt tal
-                if (val == "Utbetalning")
-                {
-                    Console.WriteLine("Ange belopp för utbetalning");
-                    double Ut = Convert.ToDouble(Console.ReadLine());
-                    Ut = -Math.Abs(Ut); //Gör om input till ett negativt tal
-                    newTransaction.Amount = Ut;//sätter inputen till attributen
 
+                //utbetalning får sina egna kategorier
+                if (keyInfo.Key != ConsoleKey.Enter)
+                {
+                    double Ut;
+                    bool validInput = false;
+
+                    while (!validInput) 
+                    {
+                        Console.WriteLine("Ange belopp för utbetalning");
+                        string InputUt = Console.ReadLine();
+
+                        if (double.TryParse(InputUt, out Ut))
+                        {
+                            Ut = -Math.Abs(Ut); //Gör om input till ett negativt tal
+                            newTransaction.Amount = Ut;//sätter inputen till attributen
+                            validInput = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Fel! Belopp måste bestå av siffror, försök igen!");
+                        }
+                    }
+                    //Välja kategori från listan
                     Console.WriteLine("Kategorisera utbetalningen enligt följande kategorier");
 
                     string Kat1 = "Hushåll";
@@ -46,27 +63,60 @@ namespace Inlämning2
                     Console.WriteLine($"2. {Kat2}");
                     Console.WriteLine($"3. {Kat3}");
 
-                    int KatVal = Convert.ToInt32(Console.ReadLine());
+                    int KatVal;
+                    bool validInputkat = false;
 
-                    switch (KatVal)
+                    while (!validInputkat) //while loop för att se till att rätt input matas in
                     {
-                        case 1:
-                            newTransaction.Category = Kat1;
-                            break;
-                        case 2:
-                            newTransaction.Category = Kat2;
-                            break;
-                        case 3:
-                            newTransaction.Category = Kat3;
-                            break;
+                        string checkInput = Console.ReadLine();
+
+                        if (int.TryParse(checkInput, out KatVal))
+                        {
+                            validInputkat = true;
+                            {
+                                switch (KatVal) //switch sats för att låta användaren välja mellan redan klara kategorier
+                                {
+                                    case 1:
+                                        newTransaction.Category = Kat1;
+                                        break;
+                                    case 2:
+                                        newTransaction.Category = Kat2;
+                                        break;
+                                    case 3:
+                                        newTransaction.Category = Kat3;
+                                        break;
+                                    default:
+                                        Console.WriteLine("Vänligen välj en av kategorierna i listan");
+                                        break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Fel! Vänligen välj en av kategorierna från listan");
+                        }
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Ange belopp för inbetalning");
-                    double In = Convert.ToDouble(Console.ReadLine());
-                    newTransaction.Amount = In;
-
+                    //inbetalningar får sina egna kategorier
+                    double In;
+                    bool validInput = false;
+                    while (!validInput)
+                    {
+                        Console.WriteLine("Ange belopp för inbetalning");
+                        string InputIn = Console.ReadLine();
+                        if (double.TryParse(InputIn, out In)) //if sats för att kolla så inputen är en double
+                        {
+                            newTransaction.Amount = In;
+                            validInput = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Fel! Belopp måste bestå av siffror, försök igen!");
+                        }
+                    }
+                   
                     Console.WriteLine("Kategorisera inbetalningen enligt följande kategorier");
 
                     string Kat1 = "Lön";
@@ -77,19 +127,38 @@ namespace Inlämning2
                     Console.WriteLine($"2. {Kat2}");
                     Console.WriteLine($"3. {Kat3}");
 
-                    int KatVal = Convert.ToInt32(Console.ReadLine());
+                    int KatVal;
+                    bool validInputkat = false;
 
-                    switch (KatVal)
+                    while (!validInputkat) //while loop för att se till att rätt input matas in
                     {
-                        case 1:
-                            newTransaction.Category = Kat1;
-                            break;
-                        case 2:
-                            newTransaction.Category = Kat2;
-                            break;
-                        case 3:
-                            newTransaction.Category = Kat3;
-                            break;
+                        string checkInput = Console.ReadLine();
+
+                        if (int.TryParse(checkInput, out KatVal))
+                        {
+                            validInputkat = true;
+                            {
+                                switch (KatVal) //switch sats för att låta användaren välja mellan redan klara kategorier
+                                {
+                                    case 1:
+                                        newTransaction.Category = Kat1;
+                                        break;
+                                    case 2:
+                                        newTransaction.Category = Kat2;
+                                        break;
+                                    case 3:
+                                        newTransaction.Category = Kat3;
+                                        break;
+                                    default:
+                                        Console.WriteLine("Vänligen välj en av kategorierna i listan");
+                                        break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Fel! Vänligen välj en av kategorierna från listan");
+                        }
                     }
                 }
 
@@ -100,7 +169,7 @@ namespace Inlämning2
                     Console.WriteLine("Beskriv transaktionen: ");
                     TransaktionsBeskrivning = Console.ReadLine();
 
-                    if (string.IsNullOrWhiteSpace(TransaktionsBeskrivning))
+                    if (string.IsNullOrWhiteSpace(TransaktionsBeskrivning)) //if sats som kollar så beskrivningen inte är tom
                     {
                         Console.WriteLine("Beskrivningen får inte vara tom, försök igen!");
                     }
@@ -108,9 +177,6 @@ namespace Inlämning2
                 } while (string.IsNullOrWhiteSpace(TransaktionsBeskrivning));
 
                 newTransaction.Description = TransaktionsBeskrivning;
-
-
-                //simpel rl för att lägga till en kategori
                 
                 //Lägger till när transkationen gjordes, med hjälp av DateTime.Now får vi realtid :))
                 newTransaction.Date = DateTime.Now;
@@ -122,17 +188,27 @@ namespace Inlämning2
 
                 //tillslut läggs transaktionen in i listan
                 transactions.Add(newTransaction);
-
+                if (newTransaction.Amount < 0)
+                {
+                    var originalForeGroundColor = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"Utbetalning {newTransaction.TransID} har lagts till: {newTransaction.Amount}kr, {newTransaction.Category}, {newTransaction.Description}, {newTransaction.Date}");
+                    Console.ForegroundColor = originalForeGroundColor;
+                }
+                else
+                {
+                    var originalForeGroundColor = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"Transaktion {newTransaction.TransID} har lagts till: {newTransaction.Amount}kr, {newTransaction.Category}, {newTransaction.Description}, {newTransaction.Date}");
+                    Console.ForegroundColor = originalForeGroundColor;
+                }
+                
                 //if sats för att se om användaren har fler transkationer att lägga till
                 Console.WriteLine("Vill du lägga till en till transaktion? (ja/nej)");
                 string continueInput = Console.ReadLine().ToLower();
                 if (continueInput != "ja")
                 {
-                    Console.WriteLine($"{newTransaction.Amount}, {newTransaction.Category}, {newTransaction.Description}, {newTransaction.Date}, {newTransaction.TransID}");
-
                     running = false;
-
-                    
                 }
             }
         }
@@ -140,12 +216,14 @@ namespace Inlämning2
         //Metod som skrier ut alla transakioner i List
         public void ListTransactions()
         {
-            foreach (var transaktion in transactions)
-                if(transaktion == null)
-                {
-                    Console.WriteLine("Finns inga transaktioner att visa");
-                }
-                else
+        transactions.Sort ((x, y) => x.Date.CompareTo(y.Date)); //Sorterar listan efter datum
+            if (transactions.Count == 0)
+            {
+                Console.WriteLine("Finns inga transaktioner att visa");
+            }
+            else
+            {
+                foreach (var transaktion in transactions)
                 { //if sats som gör att utbetalningar printas röda och inbetalmning printas gröna
                     if (transaktion.Amount < 0)
                     {
@@ -163,7 +241,9 @@ namespace Inlämning2
 
                     }
                 }
+            }
         }
+            
         //metod som tar bort en transaktion från listan genom att inputa TransID
         public void DeleteTransaction()
         {
@@ -207,6 +287,37 @@ namespace Inlämning2
                 Console.WriteLine($"Balans: {Balance}kr");
                 Console.ForegroundColor = originalColor;
             }
+        }
+
+        //metod för att visa statistik
+        public void Statistics()
+        {
+            //nya doubles som ska användas för att räkna
+            double TotalIncome = 0;
+            double TotalExpense = 0;
+            int AmountOfTransactions = 0;
+            //foreach loop för att loopa igenom alla transaktioner i List
+            foreach (var transaktion in transactions)
+            {
+                if (transaktion.Amount > 0)
+                {
+                    TotalIncome += transaktion.Amount;
+                    AmountOfTransactions++;
+                }
+                else if (transaktion.Amount < 0)
+                {
+                    TotalExpense+= transaktion.Amount;
+                    AmountOfTransactions++;
+                }
+            }
+            //printa ut resultaten
+            var originalColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Totala inkomster: {TotalIncome}kr");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Totala utgifter: {TotalExpense}kr");
+            Console.ForegroundColor = originalColor;
+            Console.WriteLine($"Total mängd transaktioner: {AmountOfTransactions}");
         }
     }
 }

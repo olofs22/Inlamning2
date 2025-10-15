@@ -32,6 +32,9 @@
                         transactionManager.DeleteTransaction();
                         break;
                     case 5:
+                        transactionManager.Statistics();
+                        break;
+                    case 6:
                         running = false;
                         break;
                 }
