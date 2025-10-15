@@ -9,58 +9,63 @@ namespace Inlämning2
 {
     internal class TransactionManager
     {
-       
+        List<Transaction> transactions = new List<Transaction>();
         public void AddTransaction()
         {
-            
+            bool running = true;
+            while (running) 
             {
-                bool running = true;
+                Transaction newTransaction = new Transaction();
 
-                List<Transaction> transactions = new List<Transaction>();
-
-                while (running)
+                Console.WriteLine("Vill du göra en inbetalning eller utbetalning?");
+                string val = Console.ReadLine();
+                if (val == "Utbetalning")
                 {
-                    Transaction newTransaction = new Transaction();
+                    Console.WriteLine("Ange belopp för utbetalning");
+                    double Ut = Convert.ToDouble(Console.ReadLine());
+                    Ut = -Math.Abs(Ut);
+                    newTransaction.Amount = Ut;
+                }
+                else
+                {
+                    Console.WriteLine("Ange belopp för inbetalning");
+                    double In = Convert.ToDouble(Console.ReadLine());
+                    newTransaction.Amount = In;
+                }
 
-                    Console.WriteLine("Vill du göra en inbetalning eller utbetalning?");
-                    string val = Console.ReadLine();
-                    if (val == "Utbetalning")
-                    {
-                        Console.WriteLine("Ange belopp för utbetalning");
-                        double Ut = Convert.ToDouble(Console.ReadLine());
-                        Ut = -Math.Abs(Ut);
-                        newTransaction.Amount = Ut;
-                        
-                    }
-                    else
-                    {
-                        Console.WriteLine("Ange belopp för inbetalning");
-                        double In = Convert.ToDouble(Console.ReadLine());
-                        newTransaction.Amount = In;
-                    }
+                Console.WriteLine("Beskriv transaktionen: ");
+                string TransaktionsBeskrivning = Console.ReadLine();
+                newTransaction.Description = TransaktionsBeskrivning;
 
-                    Console.WriteLine("Beskriv transaktionen: ");
-                    string TransaktionsBeskrivning = Console.ReadLine();
-                    newTransaction.Description = TransaktionsBeskrivning;
+                Console.WriteLine("Kategorisera transaktionen");
+                newTransaction.Category = Console.ReadLine();
 
-                    Console.WriteLine("Kategorisera transaktionen");
-                    newTransaction.Category = Console.ReadLine();
+                newTransaction.Date = DateTime.Now;
 
-                    newTransaction.Date = DateTime.Now;
+                transactions.Add(newTransaction);
 
-                    transactions.Add(newTransaction);
+                Console.WriteLine("Vill du lägga till en till transaktion? (ja/nej)");
+                string continueInput = Console.ReadLine().ToLower();
+                if (continueInput != "ja")
+                {
+                    running = false;
 
                     Console.WriteLine($"{newTransaction.Amount}, {newTransaction.Category}, {newTransaction.Description}, {newTransaction.Date}");
                 }
-            
-        
-            
-            }   
+            }
         }
         public void ListTransactions()
         {
+            foreach (var transaktion in transactions)
+                if(transaktion == null)
+                {
+                    Console.WriteLine("Finns inga transaktioner att visa");
+                }
+                else
+                {
+                    Console.WriteLine($"{transaktion.Date}, {transaktion.Amount}, {transaktion.Category}, {transaktion.Description}");
+                }
 
         }
-
     }
 }

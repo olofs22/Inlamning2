@@ -5,7 +5,11 @@
         static void Main(string[] args)
         {
             TransactionManager transactionManager = new TransactionManager();
+            
+            
+
             transactionManager.AddTransaction();
+            transactionManager.ListTransactions();
         }
     }
 }
