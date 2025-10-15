@@ -25,6 +25,9 @@
                     case 2:
                         transactionManager.ListTransactions();
                         break;
+                    case 3:
+                        transactionManager.CalculateBalance();
+                        break;
                     case 4:
                         transactionManager.DeleteTransaction();
                         break;
