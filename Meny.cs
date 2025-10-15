@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+//En simpel meny klass som kommer visas så fort programmet startar
 namespace Inlämning2
 {
     internal class Meny
