@@ -1,0 +1,4 @@
+Klasser och metoder hjälpte mig organisera koden och se till så att allt satt ihop. Med instanserna fr¨ån klasserna kan jag skapa nya funktioner som redan är kopplade till resten av programmet vilket gör det lätt att scalea och lägga till mer funktioner.
+med hjälp av klasserna och objekten från de kan man lätt skapa nya metoder för att öka funktionaliteten.
+Det jag hade svårast för var att felinmatnings-hanteringen. Skrev samma kod flera gången innan det fastnade hur jag skulle göra. Jag är nöjd med main då den innehåller väldigt lite kod men min TransactionManager är ett bombnedslag däremot finns funktionaliteten.
+Mina kommenterar är lite dåliga men ska sätta mig och uppdatera lite.
