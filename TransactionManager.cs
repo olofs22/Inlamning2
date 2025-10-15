@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -25,9 +27,9 @@ namespace Inlämning2
                 //Skapar en ny instans av objekten listan består av
                 Transaction newTransaction = new Transaction();
 
-                Console.WriteLine("klicka Enter för inbetalning, valfri knapp för utbetalning?");
+                Console.WriteLine("klicka Enter för inbetalning, valfri knapp för utbetalning");
                 ConsoleKeyInfo keyInfo = Console.ReadKey(); //readkey för att välja mellan in eller utbetalning
-                //if sats för att bestämma om man ska göra en in eller utbetalning
+               
                 //om man väljer utbetalning kommer inputen göras om till ett negativt tal
 
                 //utbetalning får sina egna kategorier
@@ -86,7 +88,7 @@ namespace Inlämning2
                                         newTransaction.Category = Kat3;
                                         break;
                                     default:
-                                        Console.WriteLine("Vänligen välj en av kategorierna i listan");
+                                        Console.WriteLine("Fel! Vänligen välj en av kategorierna från listan");
                                         break;
                                 }
                             }
@@ -190,22 +192,18 @@ namespace Inlämning2
                 transactions.Add(newTransaction);
                 if (newTransaction.Amount < 0)
                 {
-                    var originalForeGroundColor = Console.ForegroundColor;
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"Utbetalning {newTransaction.TransID} har lagts till: {newTransaction.Amount}kr, {newTransaction.Category}, {newTransaction.Description}, {newTransaction.Date}");
-                    Console.ForegroundColor = originalForeGroundColor;
+                    Meny.ColorChange($"Utbetalning {newTransaction.TransID} har lagts till: {newTransaction.Amount}kr, {newTransaction.Category}, {newTransaction.Description}, {newTransaction.Date}",ConsoleColor.Red);
                 }
                 else
                 {
-                    var originalForeGroundColor = Console.ForegroundColor;
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"Transaktion {newTransaction.TransID} har lagts till: {newTransaction.Amount}kr, {newTransaction.Category}, {newTransaction.Description}, {newTransaction.Date}");
-                    Console.ForegroundColor = originalForeGroundColor;
+                    Meny.ColorChange($"Inbetalning {newTransaction.TransID} har lagts till: {newTransaction.Amount}kr, {newTransaction.Category}, {newTransaction.Description}, {newTransaction.Date}", ConsoleColor.Green);
                 }
                 
                 //if sats för att se om användaren har fler transkationer att lägga till
                 Console.WriteLine("Vill du lägga till en till transaktion? (ja/nej)");
+
                 string continueInput = Console.ReadLine().ToLower();
+
                 if (continueInput != "ja")
                 {
                     running = false;
@@ -227,18 +225,11 @@ namespace Inlämning2
                 { //if sats som gör att utbetalningar printas röda och inbetalmning printas gröna
                     if (transaktion.Amount < 0)
                     {
-                        var originalColor = Console.ForegroundColor; //sparar färgen i konsolen
-                        Console.ForegroundColor = ConsoleColor.Red; //sätter färgen till röd
-                        Console.WriteLine($"{transaktion.Date} | {transaktion.Amount}kr | Kategori:{transaktion.Category} | Beskriving: {transaktion.Description} | ID: {transaktion.TransID}");
-                        Console.ForegroundColor = originalColor;//ställer tillbaka färgen till det den var innan
+                        Meny.ColorChange($"{transaktion.Date} | {transaktion.Amount}kr | Kategori:{transaktion.Category} | Beskriving: {transaktion.Description} | ID: {transaktion.TransID}", ConsoleColor.Red);
                     }
                     else
                     {
-                        var originalColor = Console.ForegroundColor;
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"{transaktion.Date} | {transaktion.Amount}kr | Kategori:{transaktion.Category} | Beskriving: {transaktion.Description} | ID: {transaktion.TransID}");
-                        Console.ForegroundColor = originalColor;
-
+                        Meny.ColorChange($"{transaktion.Date} | {transaktion.Amount}kr | Kategori:{transaktion.Category} | Beskriving: {transaktion.Description} | ID: {transaktion.TransID}", ConsoleColor.Green);
                     }
                 }
             }
@@ -247,12 +238,12 @@ namespace Inlämning2
         //metod som tar bort en transaktion från listan genom att inputa TransID
         public void DeleteTransaction()
         {
-            Console.WriteLine("Ange transaktion-id som tillhör transaktionen du vill ta bort");
+            Console.WriteLine("Ange transaktions-id som tillhör transaktionen du vill ta bort");
             int InputId = Convert.ToInt32(Console.ReadLine());
 
             //Skapa en ny variabel som blir transaktionen man ska ta bort
 
-            var transactionToRemove = transactions.FirstOrDefault(t => t.TransID == InputId); //TransID är samma som InputID kommer den transaktionen tas bort
+            var transactionToRemove = transactions.FirstOrDefault(t => t.TransID == InputId); //om TransID är samma som InputID kommer den transaktionen tas bort
 
 
             //if sats för visa om transkationen togs bort eller om den inte hittades
@@ -261,9 +252,9 @@ namespace Inlämning2
                 transactions.Remove(transactionToRemove);
                 Console.WriteLine($"Transaktion {transactionToRemove.TransID} togs bort!");
             }
-            else
+            else //annars blir det felmeddelande
             {
-                Console.WriteLine($"Ingen transaktion med {InputId} hittades...");
+                Console.WriteLine($"Ingen transaktion med ID: {InputId} hittades...");
             }
         }
         public void CalculateBalance()
@@ -275,17 +266,11 @@ namespace Inlämning2
             }
             if (Balance < 0) //om balance är negativ skrivs balansen ut i röd text
             {
-                var originalColor = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"Balans: {Balance}kr");
-                Console.ForegroundColor = originalColor;
+                Meny.ColorChange($"Balans: {Balance}kr", ConsoleColor.Red);
             }
             else //om balance är positiv skrivs balansen ut i grön text
             {
-                var originalColor = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"Balans: {Balance}kr");
-                Console.ForegroundColor = originalColor;
+                Meny.ColorChange($"Balans: {Balance}kr", ConsoleColor.Green);
             }
         }
 
@@ -311,12 +296,12 @@ namespace Inlämning2
                 }
             }
             //printa ut resultaten
-            var originalColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Totala inkomster: {TotalIncome}kr");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"Totala utgifter: {TotalExpense}kr");
-            Console.ForegroundColor = originalColor;
+            Meny.ColorChange("\nStatistik:", ConsoleColor.Yellow);
+
+            Meny.ColorChange($"Totala inkomster: {TotalIncome}kr", ConsoleColor.Green);
+
+            Meny.ColorChange($"Totala inkomster: {TotalExpense}kr", ConsoleColor.Red);
+
             Console.WriteLine($"Total mängd transaktioner: {AmountOfTransactions}");
         }
     }
