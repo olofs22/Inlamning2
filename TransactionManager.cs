@@ -119,6 +119,7 @@ namespace Inlämning2
                         }
                     }
                    
+                    //ClearCurrentConsoleLine();
                     Console.WriteLine("Kategorisera inbetalningen enligt följande kategorier");
 
                     string Kat1 = "Lön";
