@@ -13,6 +13,7 @@
 
             while (running)
             {
+                //Console.Clear();
                 meny.WriteMenu(); //kör meny metoden
 
                 int val;
@@ -28,24 +29,31 @@
                     switch (val) //switch för att navigera programmet
                     {
                         case 1:
+                            //Console.Clear();
                             transactionManager.AddTransaction();
                             break;
                         case 2:
+                            //Console.Clear();
                             transactionManager.ListTransactions();
                             break;
                         case 3:
+                            //Console.Clear();
                             transactionManager.CalculateBalance();
                             break;
                         case 4:
+                            //Console.Clear();
                             transactionManager.DeleteTransaction();
                             break;
                         case 5:
+                            //Console.Clear();
                             transactionManager.Statistics();
                             break;
                         case 6:
+
                             running = false;
                             break;
                         default:
+                            //Console.Clear();
                             Console.WriteLine("Ogiltigt val, försök igen!"); //kollar så att inputen är giltig, att användaren väljer mellan 1-6
                             break;
                     }
